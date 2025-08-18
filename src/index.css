@@ -2,41 +2,67 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Chatbot Design System - Glassmorphism & Gradients */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Glassmorphism Colors */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Chat Interface Colors */
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --chat-glass: 240 5% 6%;
+    --chat-glass-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Bot & User Message Colors */
+    --bot-message: 270 50% 15%;
+    --bot-message-foreground: 270 20% 95%;
+    --user-message: 220 100% 50%;
+    --user-message-foreground: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Accent & Interactive Colors */
+    --primary: 270 95% 75%;
+    --primary-foreground: 240 10% 3.9%;
+    --primary-glow: 270 100% 85%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 5% 10%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 270 50% 40%;
+    --accent-foreground: 0 0% 98%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* UI Element Colors */
+    --muted: 240 5% 6%;
+    --muted-foreground: 240 5% 65%;
+    --border: 240 5% 11%;
+    --input: 240 5% 6%;
+    --ring: 270 95% 75%;
 
+    /* Destructive Colors */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Design System Properties */
+    --radius: 1rem;
 
-    --radius: 0.5rem;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 95% 75%) 0%, hsl(220 100% 70%) 100%);
+    --gradient-chat: linear-gradient(180deg, hsl(240 10% 3.9%) 0%, hsl(240 15% 5%) 100%);
+    --gradient-glass: linear-gradient(135deg, 
+      hsla(240, 5%, 6%, 0.9) 0%, 
+      hsla(240, 10%, 8%, 0.8) 50%, 
+      hsla(240, 5%, 4%, 0.95) 100%);
+
+    /* Shadows & Effects */
+    --shadow-glass: 0 8px 32px 0 hsla(240, 5%, 0%, 0.37);
+    --shadow-glow: 0 0 40px hsla(270, 95%, 75%, 0.3);
+    --backdrop-blur: blur(16px);
+
+    /* Animation Durations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
@@ -94,6 +120,8 @@ All colors MUST be HSL.
   }
 }
 
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -101,5 +129,146 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-chat);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  /* Glassmorphism Chat Container */
+  .chat-glass {
+    background: var(--gradient-glass);
+    backdrop-filter: var(--backdrop-blur);
+    border: 1px solid hsla(240, 5%, 20%, 0.3);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Message Bubbles */
+  .message-bubble {
+    @apply transition-all duration-300 ease-out;
+    animation: slideInFade 0.3s ease-out;
+  }
+
+  .bot-message {
+    background: hsl(var(--bot-message));
+    color: hsl(var(--bot-message-foreground));
+    border-radius: 1.5rem 1.5rem 1.5rem 0.5rem;
+  }
+
+  .user-message {
+    background: var(--gradient-primary);
+    color: hsl(var(--user-message-foreground));
+    border-radius: 1.5rem 1.5rem 0.5rem 1.5rem;
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Typing Indicator */
+  .typing-indicator {
+    @apply flex space-x-1 p-3;
+  }
+
+  .typing-dot {
+    @apply w-2 h-2 rounded-full;
+    background: hsl(var(--muted-foreground));
+    animation: typingBounce 1.4s ease-in-out infinite both;
+  }
+
+  .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+  .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+  .typing-dot:nth-child(3) { animation-delay: 0s; }
+
+  /* Quick Reply Buttons */
+  .quick-reply {
+    @apply transition-all duration-200 ease-out;
+    background: hsla(240, 5%, 15%, 0.8);
+    border: 1px solid hsla(270, 95%, 75%, 0.3);
+    backdrop-filter: blur(8px);
+  }
+
+  .quick-reply:hover {
+    background: hsla(270, 95%, 75%, 0.1);
+    border-color: hsla(270, 95%, 75%, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px hsla(270, 95%, 75%, 0.2);
+  }
+
+  /* Glow Effect */
+  .glow-primary {
+    box-shadow: 0 0 20px hsla(270, 95%, 75%, 0.4);
+  }
+
+  /* Smooth Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: hsla(240, 5%, 6%, 0.3);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsla(270, 95%, 75%, 0.3);
+    border-radius: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsla(270, 95%, 75%, 0.5);
+  }
+}
+
+@layer utilities {
+  /* Animations */
+  @keyframes slideInFade {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes typingBounce {
+    0%, 80%, 100% {
+      transform: scale(0.8);
+      opacity: 0.5;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  /* Animation Classes */
+  .animate-slide-in {
+    animation: slideInFade 0.3s ease-out;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 }
